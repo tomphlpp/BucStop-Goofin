@@ -6,9 +6,13 @@ services:
       dockerfile: Dockerfile
     container_name: bucstop
     ports:
-      - "8080:80" # Expose BucStop WebApp on localhost:8080
+      - "8080:80"
     networks:
       - bucstop-network
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - ASPNETCORE_HTTPS_PORT=
     depends_on:
       - api-gateway
 
