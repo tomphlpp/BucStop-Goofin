@@ -25,6 +25,10 @@ services:
       - "8081:80" # Expose API Gateway on localhost:8081
     networks:
       - bucstop-network
+    environment:
+    - SNAKE_URL=http://game-snake:80
+    - TETRIS_URL=http://game-tetris:80
+    - PONG_URL=http://game-pong:80
     depends_on:
       - snake
       - pong

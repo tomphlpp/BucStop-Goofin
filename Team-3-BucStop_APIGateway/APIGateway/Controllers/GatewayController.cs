@@ -32,23 +32,27 @@ namespace Gateway
         /// </summary>
         /// <returns>A collection of GameInfo objects.</returns>
         [HttpGet]
-        public async Task<IEnumerable<GameInfo>> Get()
-        {
-            try
-            {
-                var SnakeTask = AddGameInfo("https://localhost:1948", "/Snake" ); //Snake 
-                var Tetristask = AddGameInfo("https://localhost:2626", "/Tetris"); //Tetris
-                var PongTask = AddGameInfo("https://localhost:1941", "Pong"); //Pong
-                await Task.WhenAll(SnakeTask, Tetristask, PongTask);
-                return TheInfo;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"An error occurred while fetching data from microservice: {ex.Message}");
-                // Return a placeholder list of GameInfo objects indicating failure
-                return GenerateFailureResponse();
-            }
-        }
+public async Task<IEnumerable<GameInfo>> Get()
+{
+    try
+    {
+        var snakeUrl = Environment.GetEnvironmentVariable("SNAKE_URL") ?? "http://localhost:1948";
+        var tetrisUrl = Environment.GetEnvironmentVariable("TETRIS_URL") ?? "http://localhost:2626";
+        var pongUrl = Environment.GetEnvironmentVariable("PONG_URL") ?? "http://localhost:1941";
+
+        var SnakeTask = AddGameInfo(snakeUrl, "/Snake"); //Snake
+        var Tetristask = AddGameInfo(tetrisUrl, "/Tetris"); //Tetris
+        var PongTask = AddGameInfo(pongUrl, "Pong"); //Pong
+
+        await Task.WhenAll(SnakeTask, Tetristask, PongTask);
+        return TheInfo;
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError($"An error occurred while fetching data from microservice: {ex.Message}");
+        return GenerateFailureResponse();
+    }
+}
 
          /// <summary>
          /// Attempts to retrieve gameinfo object from a microservice that holds a game info object (snake, tetris, pong)

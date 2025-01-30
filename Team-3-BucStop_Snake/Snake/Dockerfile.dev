@@ -1,0 +1,13 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0
+WORKDIR /src
+
+COPY ["Snake.csproj", "./"]
+RUN dotnet restore "Snake.csproj"
+
+COPY . .
+
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 80
+
+ENTRYPOINT ["dotnet", "watch", "run", "--project", "Snake.csproj"]

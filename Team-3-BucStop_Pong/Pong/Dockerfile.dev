@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0
+WORKDIR /src
+
+COPY ["Pong.csproj", "./"]
+RUN dotnet restore "Pong.csproj"
+COPY . .
+
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 80
+
+ENTRYPOINT ["dotnet", "watch", "run", "--project", "Pong.csproj"]

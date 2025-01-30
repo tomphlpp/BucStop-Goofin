@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0
+WORKDIR /src
+
+# Copy only the project file first and restore
+COPY ["APIGateway.csproj", "./"]
+RUN dotnet restore "APIGateway.csproj"
+
+# Copy the rest of the files
+COPY . .
+
+# Configure the dev environment
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 80
+
+# Start with hot reload enabled
+ENTRYPOINT ["dotnet", "watch", "run", "--project", "APIGateway.csproj"]

@@ -5,6 +5,11 @@ using BucStop;
  */
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(80); // Listen for HTTP traffic on port 80
+});
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -45,7 +50,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
